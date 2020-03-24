@@ -65,6 +65,12 @@
             if($nombre_usuario) {
                 //Verificar password
                 if(password_verify($password, $hash_password)) {
+                    //Iniciar la sesión
+                    session_start();
+                    $_SESSION['nombre'] = $nombre_usuario;
+                    $_SESSION['id'] = $id_usuario;
+                    $_SESSION['login'] = true;
+                    
                     //Login correcto
                     $respuesta = array(
                         'respuesta' => 'correcto',

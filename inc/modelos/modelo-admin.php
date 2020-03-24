@@ -46,6 +46,53 @@
     }
 
     if($accion == 'login') {
-        
+        //Crear la conexion a la BD
+        include '../funciones/conexion.php';
+
+        //Realizar la consulta a la BD
+        try {
+            //Se utiliza Prepare Statement
+            $stmt = $conn->prepare("SELECT * FROM usuarios WHERE usuario = ?");
+            $stmt->bind_param("s", $usuario);
+            $stmt->execute();
+
+            //Loguear el usuario
+            //bind_result -> trae el resultado de la consulta
+            $stmt->bind_result($id_usuario, $nombre_usuario, $hash_password);
+            $stmt->fetch();
+
+            //Si existe...
+            if($nombre_usuario) {
+                //Verificar password
+                if(password_verify($password, $hash_password)) {
+                    //Login correcto
+                    $respuesta = array(
+                        'respuesta' => 'correcto',
+                        'usuario' => $nombre_usuario,
+                        'tipo' => $accion
+                    );
+                } else {
+                    //Login incorrecto, enviar error
+                    $respuesta = array(
+                        'respuesta' => 'Contraseña incorrecta'
+                    );
+                }
+                
+            //Si no existe un usuario se devuelve el error
+            } else {
+                $respuesta = array (
+                    'error' => 'Usuario no existe'
+                );
+            }
+
+            $stmt->close();
+            $conn->close();
+
+        } catch (Exception $e) {
+            $respuesta = array(
+                'respuesta' => $e->getMessage()
+            );
+        }
+        echo json_encode($respuesta);
     }
 ?>

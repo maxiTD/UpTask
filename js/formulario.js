@@ -23,6 +23,7 @@ function validarRegistro(e) {
             title: 'Error!',
             text: 'Todos los campos son obligatorios'
         })
+
     } else {
         //Si ambos campos están completos se manda a ejecutar AJAX
         //FormData -> permite la estructuración de pares clave/objeto para enviar en una peticion XMLHttpRequest
@@ -40,7 +41,8 @@ function validarRegistro(e) {
         xhr.onload = function() {
             if(this.status == 200) {
                 var respuesta = JSON.parse(xhr.responseText);
-                
+
+                //console.log(respuesta);
                 //Si la respuesta es correcto
                 if(respuesta.respuesta == 'correcto') {
                     //Si se crea un nuevo usuario
@@ -51,7 +53,23 @@ function validarRegistro(e) {
                             title: 'Usuario Creado',
                             text: 'El usuario se creó correctamente.'
                         })
+
+                    //Si se loguea un usuario
+                    } else if(respuesta.tipo == 'login'){
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'Login Correcto',
+                            text: 'Presiona OK para abrir el dashboard.',
+                        })
+                        //Esperar a que el usuario seleccione ok para redireccionar a dashboard
+                        .then(resultado => {
+                            if(resultado.value) {
+                                //Redireccionar al dashboard
+                                window.location.href = 'index.php';
+                            }
+                        })
                     }
+
                 //Si la respuesta es 'error'
                 } else {
                     Swal.fire({
@@ -64,8 +82,5 @@ function validarRegistro(e) {
         }
         //Enviar los datos
         xhr.send(datos);
-
-
-        
     }
 }

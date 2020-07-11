@@ -6,6 +6,8 @@
     $pagActual = obtenerPaginaActual();
     if($pagActual === 'crear-cuenta' || $pagActual === 'login') {
         echo '<script src="js/formulario.js"></script>';
+    } else {
+        echo '<script src="js/scripts.js"></script>';
     }
 ?>
 </body>

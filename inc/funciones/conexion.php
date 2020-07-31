@@ -3,7 +3,7 @@
     //credenciales de la base de datos
     define('DB_USUARIO', 'root');
     define('DB_PASSWORD', '113415');
-    define('DB_HOST', 'localhost');
+    define('DB_HOST', '127.0.0.1:3306');
     define('DB_NOMBRE', 'uptask');
 
     $conn = new mysqli(DB_HOST, DB_USUARIO, DB_PASSWORD, DB_NOMBRE);
